@@ -47,9 +47,29 @@ Please use the following data assets to pull the data related to Bank customer a
 o	ActiveCustomer 
 o	Bank_Churn
 o	CreditCard
+
+
 o	CustomerInfo
 o	ExitCustomer
 o	Gender
 o	Geography
 
+## DAX Measures
 
+Active_customer = calculate([Total customers],ActiveCustomer[ActiveID]=1)
+
+Inactive_Customers = calculate([Total customers],ActiveCustomer[ActiveID]=0)
+
+Credit card holders = CALCULATE([Total customers],CreditCard[CreditID]=1)
+
+Non credit card holders = CALCULATE([Total customers],CreditCard[CreditID]=0)
+
+Total customers = DISTINCTCOUNT(CustomerInfo[CustomerId])
+
+Exist customers = CALCULATE([Total customers],ExistCustomer[ExitID]=1)
+
+Retain customers = CALCULATE([Total customers],ExistCustomer[ExitID]=0)
+
+last month exist customer = CALCULATE([Exist customers],PREVIOUSMONTH(DateMaster[Date]))
+
+Churn % = DIVIDE([Exist customers],[Total customers])
